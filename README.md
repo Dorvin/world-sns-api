@@ -13,22 +13,23 @@ Request Body
 Response Body
 {
     "user": {
-        "email": "",
-        "name": "",
-        "givenName": "",
-        "familyName": "",
-        "likelyHuman": "strong" | "weak",
-        "credentialType": "orb" | null,
-        "worldBalance": 0,
+        "email": "0x280720931601047342a0b80d57d5594d91c879b27664dab4c787edfb8e6bb36d@id.worldcoin.org",
+        "name": "World ID User",
+        "givenName": "World ID",
+        "familyName": "User",
+        "verificationLevel": "orb",
+        "worldBalance": 10,
         "todayAvailableVoteCount": 5,
+        "votedAt": 0,
         "reliability": {
-            "total": 10
-            "good": 8,
-            "bad": 1,
-            "score": 0.7
+            "total": 0,
+            "onChallenge": 0,
+            "undefined": 0,
+            "confirmed": 0,
+            "bad": 0
         }
-    }
-    "session": "session-token"
+    },
+    "sessionToken": "xXEQQZl"
 }
 ```
 ```
@@ -39,19 +40,22 @@ World-Sns-Session: "session-token"
 
 Response Body
 {
-    "email": "",
-    "name": "",
-    "givenName": "",
-    "familyName": "",
-    "likelyHuman": "strong" | "weak",
-    "credentialType": "orb" | null,
-    "worldBalance": 0,
-    "todayAvailableVoteCount": 5,
-    "reliability": {
-        "total": 10
-        "good": 8,
-        "bad": 1,
-        "score": 0.7
+    "user": {
+        "email": "0x280720931601047342a0b80d57d5594d91c879b27664dab4c787edfb8e6bb36d@id.worldcoin.org",
+        "name": "World ID User",
+        "givenName": "World ID",
+        "familyName": "User",
+        "verificationLevel": "orb",
+        "worldBalance": 10,
+        "todayAvailableVoteCount": 5,
+        "votedAt": 0,
+        "reliability": {
+            "total": 0,
+            "onChallenge": 0,
+            "undefined": 0,
+            "confirmed": 0,
+            "bad": 0
+        }
     }
 }
 ```
@@ -63,19 +67,22 @@ World-Sns-Session: "session-token"
 
 Response Body
 {
-    "email": "",
-    "name": "",
-    "givenName": "",
-    "familyName": "",
-    "likelyHuman": "strong" | "weak",
-    "credentialType": "orb" | null,
-    "worldBalance": 0,
-    "todayAvailableVoteCount": 5,
-    "reliability": {
-        "total": 10
-        "good": 8,
-        "bad": 1,
-        "score": 0.7
+    "user": {
+        "email": "0x280720931601047342a0b80d57d5594d91c879b27664dab4c787edfb8e6bb36d@id.worldcoin.org",
+        "name": "World ID User",
+        "givenName": "World ID",
+        "familyName": "User",
+        "verificationLevel": "orb",
+        "worldBalance": 10,
+        "todayAvailableVoteCount": 5,
+        "votedAt": 0,
+        "reliability": {
+            "total": 0,
+            "onChallenge": 0,
+            "undefined": 0,
+            "confirmed": 0,
+            "bad": 0
+        }
     }
 }
 ```
@@ -92,69 +99,76 @@ Request Body
 
 Response Body
 {
-    "id": 1,
-    "content": "",
-    "createdAt": 12312312,
-    "state": "onChallenge" | "undefined" | "confirmed" | "bad",
-    "vote": {
-        "good": 11,
-        "bad: 2,
-    },
-    "claimable": false,
-    "reply": [],
-    "user": {
-        "email": "",
-        "name": "",
-        "givenName": "",
-        "familyName": "",
-        "likelyHuman": "strong" | "weak",
-        "credentialType": "orb" | null,
-        "worldBalance": 0,
-        "todayAvailableVoteCount": 5,
-        "reliability": {
-            "total": 10
-            "good": 8,
-            "bad": 1,
-            "score": 0.7
+    "post": {
+        "id": 1,
+        "content": "test post content",
+        "createdAt": 1716216384969,
+        "state": "onChallenge",
+        "vote": {
+            "good": 0,
+            "bad": 0,
+            "goodVoterEmails": [],
+            "badVoterEmails": []
+        },
+        "claimed": false,
+        "replies": [],
+        "user": {
+            "email": "0x280720931601047342a0b80d57d5594d91c879b27664dab4c787edfb8e6bb36d@id.worldcoin.org",
+            "name": "World ID User",
+            "givenName": "World ID",
+            "familyName": "User",
+            "verificationLevel": "orb",
+            "worldBalance": 10,
+            "todayAvailableVoteCount": 5,
+            "votedAt": 0,
+            "reliability": {
+                "total": 1,
+                "onChallenge": 1,
+                "undefined": 0,
+                "confirmed": 0,
+                "bad": 0
+            }
         }
     }
 }
 ```
 ```
-GET /posts?state=confirmed&likelyHuman=strong
+GET /posts?state=onChallenge&verificationLevel=orb
 
 Response Body
 {
     "posts": [
         {
             "id": 1,
-            "content": "",
-            "createdAt": 12312312,
-            "state": "onChallenge" | "undefined" | "confirmed" | "bad",
+            "content": "test post content",
+            "createdAt": 1716216384969,
+            "state": "onChallenge",
             "vote": {
-                "good": 11,
-                "bad: 2,
+                "good": 0,
+                "bad": 0,
+                "goodVoterEmails": [],
+                "badVoterEmails": []
             },
-            "claimable": false,
-            "reply": [],
+            "claimed": false,
+            "replies": [],
             "user": {
-                "email": "",
-                "name": "",
-                "givenName": "",
-                "familyName": "",
-                "likelyHuman": "strong" | "weak",
-                "credentialType": "orb" | null,
-                "worldBalance": 0,
+                "email": "0x280720931601047342a0b80d57d5594d91c879b27664dab4c787edfb8e6bb36d@id.worldcoin.org",
+                "name": "World ID User",
+                "givenName": "World ID",
+                "familyName": "User",
+                "verificationLevel": "orb",
+                "worldBalance": 10,
                 "todayAvailableVoteCount": 5,
+                "votedAt": 0,
                 "reliability": {
-                    "total": 10
-                    "good": 8,
-                    "bad": 1,
-                    "score": 0.7
+                    "total": 9,
+                    "onChallenge": 9,
+                    "undefined": 0,
+                    "confirmed": 0,
+                    "bad": 0
                 }
             }
-        },
-        ...
+        }
     ]
 }
 ```
@@ -171,30 +185,37 @@ Request Body
 
 Response Body
 {
-    "id": 1,
-    "content": "",
-    "createdAt": 12312312,
-    "state": "onChallenge" | "undefined" | "confirmed" | "bad",
-    "vote": {
-        "good": 11,
-        "bad: 2,
-    },
-    "claimable": false,
-    "reply": [],
-    "user": {
-        "email": "",
-        "name": "",
-        "givenName": "",
-        "familyName": "",
-        "likelyHuman": "strong" | "weak",
-        "credentialType": "orb" | null,
-        "worldBalance": 0,
-        "todayAvailableVoteCount": 5,
-        "reliability": {
-            "total": 10
-            "good": 8,
+    "post": {
+        "id": 2,
+        "content": "test post content2",
+        "createdAt": 1716216537904,
+        "state": "onChallenge",
+        "vote": {
+            "good": 0,
             "bad": 1,
-            "score": 0.7
+            "goodVoterEmails": [],
+            "badVoterEmails": [
+                "0x280720931601047342a0b80d57d5594d91c879b27664dab4c787edfb8e6bb36d@id.worldcoin.org"
+            ]
+        },
+        "claimed": false,
+        "replies": [],
+        "user": {
+            "email": "0x280720931601047342a0b80d57d5594d91c879b27664dab4c787edfb8e6bb36d@id.worldcoin.org",
+            "name": "World ID User",
+            "givenName": "World ID",
+            "familyName": "User",
+            "verificationLevel": "orb",
+            "worldBalance": 10,
+            "todayAvailableVoteCount": 3,
+            "votedAt": 1716216635130,
+            "reliability": {
+                "total": 29,
+                "onChallenge": 29,
+                "undefined": 0,
+                "confirmed": 0,
+                "bad": 0
+            }
         }
     }
 }
@@ -207,36 +228,43 @@ World-Sns-Session: "session-token"
 
 Response Body
 {
-    "id": 1,
-    "content": "",
-    "createdAt": 12312312,
-    "state": "onChallenge" | "undefined" | "confirmed" | "bad",
-    "vote": {
-        "good": 11,
-        "bad: 2,
-    },
-    "claimable": false,
-    "reply": [],
-    "user": {
-        "email": "",
-        "name": "",
-        "givenName": "",
-        "familyName": "",
-        "likelyHuman": "strong" | "weak",
-        "credentialType": "orb" | null,
-        "worldBalance": 0,
-        "todayAvailableVoteCount": 5,
-        "reliability": {
-            "total": 10
-            "good": 8,
+    "post": {
+        "id": 2,
+        "content": "test post content2",
+        "createdAt": 1716216537904,
+        "state": "bad",
+        "vote": {
+            "good": 0,
             "bad": 1,
-            "score": 0.7
+            "goodVoterEmails": [],
+            "badVoterEmails": [
+                "0x280720931601047342a0b80d57d5594d91c879b27664dab4c787edfb8e6bb36d@id.worldcoin.org"
+            ]
+        },
+        "claimed": true,
+        "replies": [],
+        "user": {
+            "email": "0x280720931601047342a0b80d57d5594d91c879b27664dab4c787edfb8e6bb36d@id.worldcoin.org",
+            "name": "World ID User",
+            "givenName": "World ID",
+            "familyName": "User",
+            "verificationLevel": "orb",
+            "worldBalance": 10,
+            "todayAvailableVoteCount": 3,
+            "votedAt": 1716216635130,
+            "reliability": {
+                "total": 29,
+                "onChallenge": 29,
+                "undefined": 0,
+                "confirmed": 0,
+                "bad": 0
+            }
         }
     }
 }
 ```
 ```
-POST /posts/{id}/reply
+POST /posts/{id}/replies
 
 Header
 World-Sns-Session: "session-token"
@@ -248,52 +276,59 @@ Request Body
 
 Response Body
 {
-    "id": 1,
-    "content": "",
-    "createdAt": 12312312,
-    "state": "onChallenge" | "undefined" | "confirmed" | "bad",
-    "vote": {
-        "good": 11,
-        "bad: 2,
-    },
-    "claimable": false,
-    "reply": [
-        {
-            "content": "",
-            "createdAt": 12312312,
-            "user": {
-                "email": "",
-                "name": "",
-                "givenName": "",
-                "familyName": "",
-                "likelyHuman": "strong" | "weak",
-                "credentialType": "orb" | null,
-                "worldBalance": 0,
-                "todayAvailableVoteCount": 5,
-                "reliability": {
-                    "total": 10
-                    "good": 8,
-                    "bad": 1,
-                    "score": 0.7
+    "post": {
+        "id": 2,
+        "content": "test post content2",
+        "createdAt": 1716216537904,
+        "state": "onChallenge",
+        "vote": {
+            "good": 0,
+            "bad": 1,
+            "goodVoterEmails": [],
+            "badVoterEmails": [
+                "0x280720931601047342a0b80d57d5594d91c879b27664dab4c787edfb8e6bb36d@id.worldcoin.org"
+            ]
+        },
+        "claimed": false,
+        "replies": [
+            {
+                "content": "first reply of this post",
+                "createdAt": 1716216818370,
+                "user": {
+                    "email": "0x280720931601047342a0b80d57d5594d91c879b27664dab4c787edfb8e6bb36d@id.worldcoin.org",
+                    "name": "World ID User",
+                    "givenName": "World ID",
+                    "familyName": "User",
+                    "verificationLevel": "orb",
+                    "worldBalance": 10,
+                    "todayAvailableVoteCount": 3,
+                    "votedAt": 1716216635130,
+                    "reliability": {
+                        "total": 51,
+                        "onChallenge": 51,
+                        "undefined": 0,
+                        "confirmed": 0,
+                        "bad": 0
+                    }
                 }
             }
-        },
-        ...
-    ],
-    "user": {
-        "email": "",
-        "name": "",
-        "givenName": "",
-        "familyName": "",
-        "likelyHuman": "strong" | "weak",
-        "credentialType": "orb" | null,
-        "worldBalance": 0,
-        "todayAvailableVoteCount": 5,
-        "reliability": {
-            "total": 10
-            "good": 8,
-            "bad": 1,
-            "score": 0.7
+        ],
+        "user": {
+            "email": "0x280720931601047342a0b80d57d5594d91c879b27664dab4c787edfb8e6bb36d@id.worldcoin.org",
+            "name": "World ID User",
+            "givenName": "World ID",
+            "familyName": "User",
+            "verificationLevel": "orb",
+            "worldBalance": 10,
+            "todayAvailableVoteCount": 3,
+            "votedAt": 1716216635130,
+            "reliability": {
+                "total": 51,
+                "onChallenge": 51,
+                "undefined": 0,
+                "confirmed": 0,
+                "bad": 0
+            }
         }
     }
 }
