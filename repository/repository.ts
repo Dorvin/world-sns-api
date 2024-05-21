@@ -27,6 +27,14 @@ export class Repository {
       user.todayAvailableVoteCount = 5;
     }
 
+    user.reliability = {
+      total: 0,
+      onChallenge: 0,
+      undefined: 0,
+      confirmed: 0,
+      bad: 0,
+      score: undefined,
+    };
     const posts = this.getPosts()
     for (const post of posts) {
       if (post.userEmail === email) {
