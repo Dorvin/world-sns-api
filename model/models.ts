@@ -18,6 +18,10 @@ export type User = {
     bad: number;
     score: number | undefined;
   }
+  likedCount: number;
+  successVoteCount: number;
+  failVoteCount: number;
+  badPostCount: number;
 }
 
 export type Post = {
@@ -30,6 +34,10 @@ export type Post = {
     bad: number;
     goodVoterEmails: string[];
     badVoterEmails: string[];
+  }
+  like: {
+    count: number;
+    userEmails: string[];
   }
   claimed: boolean;
   replies: Reply[];

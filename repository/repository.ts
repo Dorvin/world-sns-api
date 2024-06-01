@@ -24,7 +24,7 @@ export class Repository {
     const votedAt = new Date(user.votedAt);
     votedAt.setHours(0, 0, 0, 0);
     if (votedAt.getTime() < today.getTime()) {
-      user.todayAvailableVoteCount = 5;
+      user.todayAvailableVoteCount = 50;
     }
 
     user.reliability = {
@@ -63,7 +63,7 @@ export class Repository {
       this.users.push({
         ...user,
         worldBalance: 10,
-        todayAvailableVoteCount: 5,
+        todayAvailableVoteCount: 50,
         votedAt: 0,
         reliability: {
           total: 0,
@@ -73,6 +73,10 @@ export class Repository {
           bad: 0,
           score: undefined,
         },
+        likedCount: 0,
+        successVoteCount: 0,
+        failVoteCount: 0,
+        badPostCount: 0,
       });
     }
   }
@@ -109,6 +113,10 @@ export class Repository {
         goodVoterEmails: [],
         badVoterEmails: [],
       },
+      like: {
+        count: 0,
+        userEmails: [],
+      },
       claimed: false,
       replies: [],
       userEmail,
@@ -120,7 +128,7 @@ export class Repository {
   getPosts(): Post[] {
     // update post state
     for (const post of this.posts) {
-      if (Date.now() - post.createdAt < 7 * 24 * 60 * 60 * 1000) {
+      if (Date.now() - post.createdAt < 3 * 24 * 60 * 60 * 1000) {
         post.state = 'onChallenge';
       } else {
         const total = post.vote.good + post.vote.bad;
@@ -148,11 +156,26 @@ export class Repository {
         return false;
       }
       return true;
-    });
+    }).sort((a, b) => this.getPostScore(b) - this.getPostScore(a));
   }
 
   getPost(id: number): Post | undefined {
     const posts = this.getPosts();
     return posts.find(post => post.id === id);
+  }
+
+  getPostScore(post: Post): number {
+    const postUser = this.getUserByEmail(post.userEmail)!;
+    const score = 2 * postUser.likedCount
+      + postUser.successVoteCount
+      - postUser.failVoteCount
+      - this.getExponentialIncreasePenalty(postUser.badPostCount);
+    const days = Math.floor((Date.now() - post.createdAt) / (24 * 60 * 60 * 1000));
+    const gravity = 1.8;
+    return score / Math.pow(days + 2, gravity);
+  }
+
+  getExponentialIncreasePenalty(count: number): number {
+    return Math.pow(2, count) - 1;
   }
 }

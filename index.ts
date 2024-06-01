@@ -113,6 +113,32 @@ app.post("/posts/:id/claim", (req: Request, res: Response) => {
     });
   }
 });
+app.post("/posts/:id/like", (req: Request, res: Response) => {
+  const sessionToken = req.header('World-Sns-Session');
+  const postId = parseInt(req.params.id, 10);
+  try {
+    const email = service.verifySession(sessionToken);
+    const data = service.likePost(postId, email);
+    res.json(data);
+  } catch (error) {
+    res.status(400).json({
+      'error': getErrorMessage(error),
+    });
+  }
+});
+app.post("/posts/:id/unlike", (req: Request, res: Response) => {
+  const sessionToken = req.header('World-Sns-Session');
+  const postId = parseInt(req.params.id, 10);
+  try {
+    const email = service.verifySession(sessionToken);
+    const data = service.unlikePost(postId, email);
+    res.json(data);
+  } catch (error) {
+    res.status(400).json({
+      'error': getErrorMessage(error),
+    });
+  }
+});
 app.post("/posts/:id/replies", (req: Request, res: Response) => {
   const sessionToken = req.header('World-Sns-Session');
   const { reply } = req.body;

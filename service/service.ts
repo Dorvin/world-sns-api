@@ -87,10 +87,67 @@ export class Service {
       throw new Error('Already voted');
     }
 
+    if (user.worldBalance < 0.1) {
+      throw new Error('Not enough balance');
+    }
+
     user.todayAvailableVoteCount -= 1;
+    user.worldBalance -= 0.1;
     user.votedAt = Date.now();
     post.vote[vote] += 1;
     post.vote[`${vote}VoterEmails`].push(user.email);
+
+    return {
+      post: this.generatePostDto(post),
+    }
+  }
+
+  likePost(postId: number, userEmail: string): GetPostDto {
+    const user = this.repository.getUserByEmail(userEmail);
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const post = this.repository.getPost(postId);
+    if (!post) {
+      throw new Error('Post not found');
+    }
+
+    if (post.like.userEmails.includes(user.email)) {
+      throw new Error('Already liked');
+    }
+
+    post.like.count += 1;
+    post.like.userEmails.push(user.email);
+
+    const postUser = this.repository.getUserByEmail(post.userEmail)!;
+    postUser.likedCount += 1;
+
+    return {
+      post: this.generatePostDto(post),
+    }
+  }
+
+  unlikePost(postId: number, userEmail: string): GetPostDto {
+    const user = this.repository.getUserByEmail(userEmail);
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const post = this.repository.getPost(postId);
+    if (!post) {
+      throw new Error('Post not found');
+    }
+
+    if (!post.like.userEmails.includes(user.email)) {
+      throw new Error('Not liked');
+    }
+
+    post.like.count -= 1;
+    post.like.userEmails = post.like.userEmails.filter(email => email !== user.email);
+
+    const postUser = this.repository.getUserByEmail(post.userEmail)!;
+    postUser.likedCount -= 1;
 
     return {
       post: this.generatePostDto(post),
@@ -120,12 +177,24 @@ export class Service {
       for (const voterEmail of post.vote.goodVoterEmails) {
         const voter = this.repository.getUserByEmail(voterEmail)!;
         voter.worldBalance += 1;
+        voter.successVoteCount += 1;
+      }
+      for (const voterEmail of post.vote.badVoterEmails) {
+        const voter = this.repository.getUserByEmail(voterEmail)!;
+        voter.failVoteCount += 1;
       }
     } else {
       for (const voterEmail of post.vote.badVoterEmails) {
         const voter = this.repository.getUserByEmail(voterEmail)!;
         voter.worldBalance += 1;
+        voter.successVoteCount += 1;
       }
+      for (const voterEmail of post.vote.goodVoterEmails) {
+        const voter = this.repository.getUserByEmail(voterEmail)!;
+        voter.failVoteCount += 1;
+      }
+      const postUser = this.repository.getUserByEmail(post.userEmail)!;
+      postUser.badPostCount += 1;
     }
 
     user.worldBalance += 1;
@@ -179,6 +248,7 @@ export class Service {
       createdAt: post.createdAt,
       state: post.state,
       vote: post.vote,
+      like: post.like,
       claimed: post.claimed,
       replies: post.replies.map(reply => ({
         content: reply.content,
